@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.12.1
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONNUNBUFFERED=1
@@ -9,4 +9,3 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY ./core /app
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
