@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin , Base
 from django.utils.translation import gettext_lazy as _
 
 
-class CustomUserManager(BaseUserManager):
+class UserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
@@ -38,10 +38,12 @@ class User(AbstractBaseUser , PermissionsMixin):
     email = models.EmailField(max_length=255 , unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    first_name = models.CharField(max_length= 256 , default= True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-    objects = CustomUserManager()
+    objects = UserManager()
 
     created_date = models.DateTimeField(auto_now_add= True)
     updated_date = models.DateTimeField(auto_now= True)
