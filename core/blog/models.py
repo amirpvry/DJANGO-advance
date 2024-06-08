@@ -1,14 +1,17 @@
 from django.db import models
-from blog.models import User
+from django.contrib.auth import get_user_model
 # Create your models here.
+
+User = get_user_model()
+
 class Post(models.Model):
     
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     title = models.CharField(max_length= 256)
 
     content =models.TextField()
-    categories = models.ManyToManyField('Categories', on_delete=models.SET_NULL , null = True)
+    categories = models.ForeignKey('Categories', on_delete=models.SET_NULL , null = True)
     
     status =models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True)
