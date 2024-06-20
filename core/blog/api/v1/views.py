@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 def postList(request):
     if request.method == "GET":
        
-        posts = Post.objects.filter(status=True)
+        posts = Post.objects.all()
         serialaizers = PostSerializer(posts, many=True)
         return Response(serialaizers.data)
     elif request.method == "POST":
@@ -21,9 +21,9 @@ def postList(request):
             return Response(serialaizers.data, status=status.HTTP_201_CREATED)
         return Response(serialaizers.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(["GET" , "PUT"])
+@api_view(["GET" , "PUT" , "DELETE"])
 def postDetail(request , id):
-   post = get_object_or_404(Post , pk=id , status = True)
+   post = get_object_or_404(Post , pk=id , )
    if request.method == "GET":
        serialaizers = PostSerializer(post)
        return Response(serialaizers.data)
@@ -33,6 +33,9 @@ def postDetail(request , id):
            serialaizers.save()
            return Response(serialaizers.data)
        return Response(serialaizers.errors, status=status.HTTP_400_BAD_REQUEST)
+   elif request.method == 'DELETE':
+       post.delete()
+       return Response( {"details":"post was deleted"} , status=status.HTTP_204_NO_CONTENT)
    
 
 #    try: 
