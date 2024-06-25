@@ -1,29 +1,31 @@
-from rest_framework.decorators import api_view 
+from rest_framework.decorators import api_view , permission_classes
 from rest_framework.response import Response
 from .serialaizers import PostSerializer
 from blog.models import Post
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
 
 @api_view(["GET", "POST"])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def postList(request):
     if request.method == "GET":
        
-        posts = Post.objects.all()
+        posts = Post.objects.filter(status = True)
         serialaizers = PostSerializer(posts, many=True)
         return Response(serialaizers.data)
     elif request.method == "POST":
         serialaizers = PostSerializer(data=request.data)
-        if serialaizers.is_valid():
-            serialaizers.save()
-            return Response(serialaizers.data, status=status.HTTP_201_CREATED)
-        return Response(serialaizers.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        serialaizers.is_valid(raise_exception= True)
+        serialaizers.save()
+        return Response(serialaizers.data,)
+        
 @api_view(["GET" , "PUT" , "DELETE"])
+@permission_classes([IsAuthenticated])
 def postDetail(request , id):
-   post = get_object_or_404(Post , pk=id , )
+   post = get_object_or_404(Post , pk=id ,status= True )
    if request.method == "GET":
        serialaizers = PostSerializer(post)
        return Response(serialaizers.data)
