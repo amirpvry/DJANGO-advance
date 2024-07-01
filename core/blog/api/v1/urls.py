@@ -16,10 +16,3 @@ urlpatterns = router.urls
 
 
 
-
-# urlpatterns = [
-
-#     path('post/',views.PostViewSet.as_view({'get': 'list'}),name="post-list"),
-#     path('post/<int:pk>',views.PostViewSet.as_view({'get': 'retrieve'}),name="post-detail"),
-   
-# ]

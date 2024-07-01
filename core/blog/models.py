@@ -25,9 +25,10 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    # def get_absolute_api_url(self):
+    #     return reverse('blog:api-v1:post-detail', kwargs={'pk': self.pk})
     def get_absolute_api_url(self):
-        return reverse('blog:api-v1:post-detail', kwargs={'pk': self.pk})
-    
+        return reverse('blog:api-v1:post-detail', kwargs={'pk': self})
 
 class Categories(models.Model):
     name= models.CharField(max_length=256)
