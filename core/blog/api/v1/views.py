@@ -1,8 +1,11 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serialaizers import PostSerializer , CategorySerializer
-from blog.models import Post , Categories
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from .serialaizers import PostSerializer, CategorySerializer
+from blog.models import Post, Categories
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,
+    IsAuthenticated,
+)
 from rest_framework import status, generics
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -11,7 +14,8 @@ from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from .paginations import LargeResultsSetPagination
-''''
+
+"""'
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def postList(request):
@@ -43,18 +47,25 @@ def postDetail(request , id):
        post.delete()
        return Response( {"details":"post was deleted"} , status=status.HTTP_204_NO_CONTENT)
    
-'''''
-
+""" ""
 
 
 class PostViewSetModel(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend , filters.SearchFilter , filters.OrderingFilter]
-    filterset_fields = {'status':['exact','in'] , 'categories':['exact'] , 'content':['exact'] }
-    search_fields = ['title']
-    ordering_fields = ['create_date']
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = {
+        "status": ["exact", "in"],
+        "categories": ["exact"],
+        "content": ["exact"],
+    }
+    search_fields = ["title"]
+    ordering_fields = ["create_date"]
     pagination_class = LargeResultsSetPagination
 
 
@@ -62,8 +73,3 @@ class CategorySetModel(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Categories.objects.all()
-
-
-
-
-

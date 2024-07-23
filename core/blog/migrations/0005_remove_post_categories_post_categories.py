@@ -7,17 +7,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0004_remove_post_categories_post_categories'),
+        ("blog", "0004_remove_post_categories_post_categories"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='post',
-            name='categories',
+            model_name="post",
+            name="categories",
         ),
         migrations.AddField(
-            model_name='post',
-            name='categories',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='blog.categories'),
+            model_name="post",
+            name="categories",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="blog.categories",
+            ),
         ),
     ]
